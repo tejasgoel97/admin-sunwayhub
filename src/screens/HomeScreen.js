@@ -1,30 +1,45 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import {collection, getDocs, addDoc, getDoc} from 'firebase/firestore'
 
 import {useNavigate} from 'react-router-dom'
+import AllProductList from "../components/AllProducts/AllProductList"
 
 import {db} from "../firebase/config"
+import useCategories from "../hooks/useCategories"
+import DropDownMenu from "../components/DropDownMenu"
+import InputformComp from "../components/InputFormComp"
 
 function HomeScreen() {
     const navigate = useNavigate()
-    function showDOCUMENTS(){
-        const ref = collection(db, "products")
-        getDocs(ref).then(snapshot=> {
-            const data = []
-            snapshot.docs.forEach(doc=> console.log(doc.data()))
-        })
+    const [category, setCategory] = useState(null);
+    const [searchText, setSearchText] = useState("")
+    const [subCategory, setSubCategory] = useState(null);
 
-    }
-    useEffect(()=>{
-        const ref = collection(db, "products")
-        // getDocs(ref).then(snapshot=> console.log(snapshot.docs))
-    }, [])
+    const {categories,isCategoriesloading, categoriesLoadingError} = useCategories();
 
-    return<div className="flex justify-center">
+    function handleCategorySelect(cat){
+        setCategory(cat)
+        setSubCategory(null)
+       }
+
+    return<div>
         <div>        
-        <button  className="bg-red-500 p-3 m-3 rounded border-2"
-        onClick={()=> navigate("/AddNewProduct")}>Add New Product</button>
+            <button  className="bg-red-500 p-3 m-3 rounded border-2"
+            onClick={()=> navigate("/AddNewProduct")}>Add New Product</button>
+            <button  className="bg-red-500 p-3 m-3 rounded border-2"
+            onClick={()=> navigate("/AddNewCategory")}>Add New Category</button>
+           
         </div>
+        <div className="w-3/6 mx-auto">
+            <InputformComp text={searchText} setText={setSearchText} label="Search Term" />
+        </div>
+
+        {categories && <div className="flex justify-center space-x-2 flex-1  w-3/6 mx-auto">
+            <DropDownMenu options = {categories} selected={category} setSelected = {handleCategorySelect} nameField="catName" placeHolder="Select Category"/>
+            {category && <DropDownMenu options = {category.subCat} selected={subCategory} setSelected = {setSubCategory} nameField="subCatName" placeHolder="Select Sub Category"/>}
+            {category && <button className="bg-gray-700 p-1 rounded text-white" onClick={()=> setCategory(null)}> Reset</button>}
+        </div>}
+        <AllProductList/>
     </div>
 }
 

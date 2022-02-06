@@ -1,24 +1,28 @@
 import React, { useState } from 'react';
-import ImageUploadComp from './ImageUploadComp';
-import InputformComp from './InputFormComp';
-import DropDownMenu from "./DropDownMenu"
-import ImageUploadModel from "./ImageUploadModel"
+import ImageUploadComp from '../ImageUploadComp';
+import InputformComp from '../InputFormComp';
+import DropDownMenu from "../DropDownMenu"
+import ImageUploadModel from "../ImageUploadModel"
 import { addDoc, collection } from '@firebase/firestore';
-import { db } from '../firebase/config';
+import { db } from '../../firebase/config';
+import ConfirmChangesModel from './ConfirmChangesModel';
 
 
-const AddProductForm =({allCat}) =>{
-    const [name, setName] = useState('');
-    const [category, setCategory] = useState(null);
-    const [subCategory, setSubCategory] = useState(null);
-    const [MRP, setMRP] = useState(0);
-    const [SP, setSP] = useState(0);
-    const [maxQuantity, setMaxQuantity] = useState(10);
-    const [description, setdescription] = useState([])
+const EditProductForm =({allCat, product, productId}) =>{
+    const selectedCat= allCat.find(cat=> cat.id===product.mainCategory)
+    const selectedSubCat = selectedCat.subCat.find(subcat=> subcat.subCatName === product.subCategory)
+    const [name, setName] = useState(product.productName);
+    const [category, setCategory] = useState(selectedCat);
+    const [subCategory, setSubCategory] = useState(selectedSubCat);
+    const [MRP, setMRP] = useState(product.MRP);
+    const [SP, setSP] = useState(product.SP);
+    const [maxQuantity, setMaxQuantity] = useState(product.maxQuantity);
+    const [description, setdescription] = useState(product.productDescription)
     const [showModel, setShowModel] = useState(false);
-    const [imgUrl, setImgUrl] = useState(null);
+    const [imgUrl, setImgUrl] = useState(product.featureImage);
     const [error, setError] = useState(null)
-
+    const[confirmModel, setConfirmModel] = useState(false)
+    
     function handleUrl(url){
         setError(null)
         setImgUrl(url)
@@ -46,8 +50,8 @@ const AddProductForm =({allCat}) =>{
     setSubCategory(null)
    }
     
-
-    async function handleCreateDoc(){
+   let FinalProduct = {}
+    async function handleChange(){
         setError(null)
         if(!name) return setError("Please select a Valid Name");
         // if(!category) return setError("Please Select a Valid Category")
@@ -59,10 +63,10 @@ const AddProductForm =({allCat}) =>{
         if(description.length <0) return setError("Please Select Atleast One description")
         const CatName = category.id;
         const SubCatName = subCategory.id;
-        const FinalProduct= new ProductModel(name, MRP, SP, CatName, SubCatName, description, maxQuantity, imgUrl)
-        console.log("FinalProduct", FinalProduct)
-        const docRef = await addDoc(collection(db, "products"), FinalProduct);
-          console.log("Document written with ID: ", docRef.id);
+        FinalProduct= new ProductModel(name, MRP, SP, CatName, SubCatName, description, maxQuantity, imgUrl)
+        setConfirmModel(FinalProduct)
+        // const docRef = await addDoc(collection(db, "products"), FinalProduct);
+        //   console.log("Document written with ID: ", docRef.id);
     }
     return (
         <div className="w-auto xl:w-4/6 space-y-3">
@@ -71,7 +75,7 @@ const AddProductForm =({allCat}) =>{
                <InputformComp label="MRP" text={MRP} setText={setMRP} type="number"/>
                <InputformComp label="Selling Price" text={SP} setText={setSP} type="number"/>
             </div>
-            <div className="flex justify-center space-x-2 flex-1">  
+            <div className="flex justify-center space-x-2 flex-1 p-8">  
                 <DropDownMenu options = {allCat} selected={category} setSelected = {handleCategorySelect} nameField="catName" placeHolder="Select Category"/>
                 {category && <DropDownMenu options = {category.subCat} selected={subCategory} setSelected = {setSubCategory} nameField="subCatName" placeHolder="Select Sub Category"/>}
             </div>
@@ -93,37 +97,22 @@ const AddProductForm =({allCat}) =>{
                 class="bg-red-500 px-7 py-2 ml-2 rounded-md text-md text-white font-semibold">
                 {imgUrl ?"Change Image": "Add Image"}
             </button>
-            {/* This is model to show Image Uploading frature */}
+            {/* CONFIRMATION MODEL */}
+            {confirmModel && <ConfirmChangesModel setConfirmModel={setConfirmModel} finalProduct={confirmModel} initialProduct={product} productId={productId}/>}
+            {/* This is model to show Image Uploading Feature */}
             {showModel && <ImageUploadModel setShowModel={setShowModel} handleUrl={handleUrl}/>}
-            {/* <ImageUploadComp  imgName = {name} folderName="categoty"/> */}
             {imgUrl && <img src={imgUrl}/>}
             </div>
             <InputformComp label="Max Product Order" text={maxQuantity} setText={setMaxQuantity} type="number"/>
             {error && <p className="p-1 bg-red-600 rounded-b break-words text-white">{error}</p>}
-            <button className="bg-green-700 mx-2 my-2 px-2 py-2 text-center text-white rounded-full w-full" onClick={handleCreateDoc}>Create</button>
+            <button className="bg-green-700 mx-2 my-2 px-2 py-2 text-center text-white rounded-full w-full" onClick={handleChange}>Make Changes</button>
         </div>
     )
 }
-
-
-// class ProductModel {
-//     constructor(productName, MRP, SP,mainCategory , subCategory, productDescription, maxQuantity, featureImage){
-//         this.productName= productName;
-//         this.MRP = MRP;
-//         this.SP = SP;
-//         this.mainCategory = mainCategory;
-//         this.subCategory = subCategory;
-//         this.productDescription = productDescription;
-//         this.maxQuantity = maxQuantity;
-//         this.featureImage= featureImage
-//     }
-// }
 function ProductModel(productName, MRP, SP,mainCategory , subCategory, productDescription, maxQuantity, featureImage){
-    return{
-        productName, MRP, SP,mainCategory , subCategory, productDescription, maxQuantity, featureImage
-    }
+    return{productName, MRP, SP,mainCategory , subCategory, productDescription, maxQuantity, featureImage}
 }
 
 
 
-export default AddProductForm;
+export default EditProductForm;
