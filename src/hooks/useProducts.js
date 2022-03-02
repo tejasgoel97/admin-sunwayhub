@@ -14,14 +14,15 @@ const useProducts = ()=>{
             try{
                 setIsProductLoading(true)
                 setProductLoadingError(false)
+                console.log("Hi there")
                 const querySnapshot = await getDocs(collection(db, "products"))
                 let products = []
                 querySnapshot.forEach((doc) => {
                     // doc.data() is never undefined for query doc snapshots
-                    // console.log(doc.id, " => ", doc.data());
+                    console.log(doc.id, " => ", doc.data());
                     products.push({productId: doc.id, ...doc.data()});
                 });
-                setIsProductLoading(true)
+                setIsProductLoading(false)
                 setProductLoadingError(false)
                 setProducts(products)
 

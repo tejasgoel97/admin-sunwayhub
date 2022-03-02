@@ -23,7 +23,9 @@ const EditProductScreen = () =>{
     }
     if(product &&categories){
     return(
-    <div><EditProductForm allCat={categories} product={product} productId={urlParams.productId}/></div>
+    <div className="justify-center flex">
+        <EditProductForm allCat={categories} product={product} productId={urlParams.productId}/>
+    </div>
     )}
     return <p>Hi ther</p>
 }

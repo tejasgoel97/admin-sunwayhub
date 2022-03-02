@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom"
+import useAuthContext from "../hooks/useAuthContext";
+import useLogout from "../hooks/useLogout";
 
 const Navbar = () =>{
+
+  const {authDone, user}= useAuthContext();
+  const {Logout} = useLogout();
 
     return (
         <nav className="bg-green-400">
@@ -18,8 +23,11 @@ const Navbar = () =>{
                     </div>
                     <div className=" flex-1 items-center">
                         <div className="flex justify-end px-5">
-                        <Link to="/login" className =" text-white block px-3 py-2 rounded-md text-base font-medium" aria-current="page">Login</Link>
-                        <div className ="btn text-white block px-3 py-2 rounded-md text-base font-medium" aria-current="page">Logout</div>
+                        {!authDone ? 
+                            <Link to="/login" className =" text-white block px-3 py-2 rounded-md text-base font-medium" aria-current="page">Login</Link>
+                            :
+                            <div className ="btn text-white block px-3 py-2 rounded-md text-base font-medium hover:cursor-pointer" aria-current="page" onClick={()=> Logout()}>Logout</div>
+                        }                    
                         </div>
                     </div>
                 </div>

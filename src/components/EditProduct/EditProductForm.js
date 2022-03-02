@@ -53,18 +53,22 @@ const EditProductForm =({allCat, product, productId}) =>{
    let FinalProduct = {}
     async function handleChange(){
         setError(null)
-        if(!name) return setError("Please select a Valid Name");
-        // if(!category) return setError("Please Select a Valid Category")
-        // if(!subCategory) return setError("Please Select a Valid Sub Category")
-        if(MRP<10) return setError("MRP should be greater then 10")
-        if(SP<10) return setError("SP should be greater then 10")
-        if(SP>MRP) return setError("Selling Price Should not be greater then MRP")
-        if(maxQuantity<1) return setError("Please select a max Quantity to order");
-        if(description.length <0) return setError("Please Select Atleast One description")
+        let errorArray =[];
+        if(!name) errorArray.push("Please select a Valid Name");
+        // if(!category) errorArray.push("Please Select a Valid Category")
+        // if(!subCategory) errorArray.push("Please Select a Valid Sub Category")
+        if(MRP<10) errorArray.push("MRP should be greater then 10")
+        if(SP<10) errorArray.push("SP should be greater then 10")
+        if(SP>MRP) errorArray.push("Selling Price Should not be greater then MRP")
+        if(maxQuantity<1) errorArray.push("Please select a max Quantity to order");
+        if(description.length <1) errorArray.push("Please Select Atleast One description")
+        console.log("ERR", errorArray)
+        if(errorArray.length) return setError(errorArray);
         const CatName = category.id;
         const SubCatName = subCategory.id;
-        FinalProduct= new ProductModel(name, MRP, SP, CatName, SubCatName, description, maxQuantity, imgUrl)
-        setConfirmModel(FinalProduct)
+        FinalProduct= new ProductModel(name, MRP, SP, CatName, SubCatName, description, maxQuantity, imgUrl);
+        
+        // setConfirmModel(FinalProduct)
         // const docRef = await addDoc(collection(db, "products"), FinalProduct);
         //   console.log("Document written with ID: ", docRef.id);
     }
@@ -94,7 +98,7 @@ const EditProductForm =({allCat, product, productId}) =>{
             <div>
             <button
                 onClick={() => setShowModel(true)}
-                class="bg-red-500 px-7 py-2 ml-2 rounded-md text-md text-white font-semibold">
+                className="bg-red-500 px-7 py-2 ml-2 rounded-md text-md text-white font-semibold">
                 {imgUrl ?"Change Image": "Add Image"}
             </button>
             {/* CONFIRMATION MODEL */}
@@ -104,7 +108,7 @@ const EditProductForm =({allCat, product, productId}) =>{
             {imgUrl && <img src={imgUrl}/>}
             </div>
             <InputformComp label="Max Product Order" text={maxQuantity} setText={setMaxQuantity} type="number"/>
-            {error && <p className="p-1 bg-red-600 rounded-b break-words text-white">{error}</p>}
+            {error && <div>{error.map((e)=> <p key={e} className="p-1 my-1 bg-red-600 rounded break-words text-white">{e}</p>)}</div>}
             <button className="bg-green-700 mx-2 my-2 px-2 py-2 text-center text-white rounded-full w-full" onClick={handleChange}>Make Changes</button>
         </div>
     )

@@ -5,6 +5,7 @@ import DropDownMenu from "./DropDownMenu"
 import ImageUploadModel from "./ImageUploadModel"
 import { addDoc, collection } from '@firebase/firestore';
 import { db } from '../firebase/config';
+import DeliveryCodesComp from "./DeliveryCodesComp"
 
 
 const AddProductForm =({allCat}) =>{
@@ -13,10 +14,12 @@ const AddProductForm =({allCat}) =>{
     const [subCategory, setSubCategory] = useState(null);
     const [MRP, setMRP] = useState(0);
     const [SP, setSP] = useState(0);
+    const [GST, setGST] = useState(0);
     const [maxQuantity, setMaxQuantity] = useState(10);
     const [description, setdescription] = useState([])
     const [showModel, setShowModel] = useState(false);
     const [imgUrl, setImgUrl] = useState(null);
+    const [deliveryCodes, setDeliveryCodes] = useState(["121102", "201303"])
     const [error, setError] = useState(null)
 
     function handleUrl(url){
@@ -59,7 +62,7 @@ const AddProductForm =({allCat}) =>{
         if(description.length <0) return setError("Please Select Atleast One description")
         const CatName = category.id;
         const SubCatName = subCategory.id;
-        const FinalProduct= new ProductModel(name, MRP, SP, CatName, SubCatName, description, maxQuantity, imgUrl)
+        const FinalProduct= new ProductModel(name, MRP, SP, GST, CatName, SubCatName, description, maxQuantity, imgUrl, deliveryCodes)
         console.log("FinalProduct", FinalProduct)
         const docRef = await addDoc(collection(db, "products"), FinalProduct);
           console.log("Document written with ID: ", docRef.id);
@@ -70,6 +73,7 @@ const AddProductForm =({allCat}) =>{
             <div className="flex justify-center space-x-2 flex-1">
                <InputformComp label="MRP" text={MRP} setText={setMRP} type="number"/>
                <InputformComp label="Selling Price" text={SP} setText={setSP} type="number"/>
+               <InputformComp label="GST %" text={GST} setText={setGST} type="number"/>
             </div>
             <div className="flex justify-center space-x-2 flex-1">  
                 <DropDownMenu options = {allCat} selected={category} setSelected = {handleCategorySelect} nameField="catName" placeHolder="Select Category"/>
@@ -99,6 +103,9 @@ const AddProductForm =({allCat}) =>{
             {imgUrl && <img src={imgUrl}/>}
             </div>
             <InputformComp label="Max Product Order" text={maxQuantity} setText={setMaxQuantity} type="number"/>
+            <div>
+                <DeliveryCodesComp deliveryCodes={deliveryCodes} setDeliveryCodes={setDeliveryCodes}/>
+            </div>
             {error && <p className="p-1 bg-red-600 rounded-b break-words text-white">{error}</p>}
             <button className="bg-green-700 mx-2 my-2 px-2 py-2 text-center text-white rounded-full w-full" onClick={handleCreateDoc}>Create</button>
         </div>
@@ -118,9 +125,9 @@ const AddProductForm =({allCat}) =>{
 //         this.featureImage= featureImage
 //     }
 // }
-function ProductModel(productName, MRP, SP,mainCategory , subCategory, productDescription, maxQuantity, featureImage){
+function ProductModel(productName, MRP, SP, GST, mainCategory , subCategory, productDescription, maxQuantity, featureImage, deliveryCodes){
     return{
-        productName, MRP, SP,mainCategory , subCategory, productDescription, maxQuantity, featureImage
+        productName, MRP, SP, GST, mainCategory ,subCategory, productDescription, maxQuantity, featureImage, deliveryCodes
     }
 }
 
