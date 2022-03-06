@@ -6,6 +6,7 @@ import ImageUploadModel from "../ImageUploadModel"
 import { addDoc, collection } from '@firebase/firestore';
 import { db } from '../../firebase/config';
 import ConfirmChangesModel from './ConfirmChangesModel';
+import ManageImageComp from './ManageImageComp';
 
 
 const EditProductForm =({allCat, product, productId}) =>{
@@ -22,6 +23,7 @@ const EditProductForm =({allCat, product, productId}) =>{
     const [imgUrl, setImgUrl] = useState(product.featureImage);
     const [error, setError] = useState(null)
     const[confirmModel, setConfirmModel] = useState(false)
+    const[images, setImages] = useState(product.images || [])
     
     function handleUrl(url){
         setError(null)
@@ -108,6 +110,7 @@ const EditProductForm =({allCat, product, productId}) =>{
             {imgUrl && <img src={imgUrl}/>}
             </div>
             <InputformComp label="Max Product Order" text={maxQuantity} setText={setMaxQuantity} type="number"/>
+            <ManageImageComp product={product} productId={productId} images={images} setImages={setImages}/>
             {error && <div>{error.map((e)=> <p key={e} className="p-1 my-1 bg-red-600 rounded break-words text-white">{e}</p>)}</div>}
             <button className="bg-green-700 mx-2 my-2 px-2 py-2 text-center text-white rounded-full w-full" onClick={handleChange}>Make Changes</button>
         </div>

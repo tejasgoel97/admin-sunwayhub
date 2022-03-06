@@ -5,9 +5,7 @@ import InputformComp from "./InputFormComp"
 const DeliveryCodesComp = ({deliveryCodes, setDeliveryCodes}) =>{
     const [code, setCode] = useState("")
     const handleKeyDown = (e) =>{
-        console.log(e.target.value)
         setCode(e.target.value)
-        console.log(e.key)
         if(e.key ==="Enter"){
             setCode("")
             setDeliveryCodes([...deliveryCodes, code])

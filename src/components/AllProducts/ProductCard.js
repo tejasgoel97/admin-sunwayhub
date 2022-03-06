@@ -2,8 +2,12 @@ import { db } from "../../firebase/config";
 import { doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 
+import ManageImageComp from "../EditProduct/ManageImageComp"
+
 const ProductCard = ({product, handleProductEdit}) =>{
     const [available, setAvailable] = useState(()=> product.available? true: false);
+    const[images, setImages] = useState(product.images || [])
+
     const {productName, SP, MRP, featureImage, mainCategory,subCategory, productId} = product;
     let discountPerc = ((1-SP/MRP)*100).toFixed(2);
     console.log("available",product.available)
@@ -36,6 +40,7 @@ const ProductCard = ({product, handleProductEdit}) =>{
             <button className="bg-green-600 px-1 rounded border-2"> <img src="https://img.icons8.com/material-outlined/20/000000/edit--v2.png" className="inline"/>Edit</button>
          </div>
     </div>
+            <ManageImageComp product={product} productId={productId} images={images} setImages={setImages}/>
     
 </div>
 }

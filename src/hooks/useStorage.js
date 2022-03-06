@@ -8,6 +8,7 @@ const useStorage = (file) => {
   const [url, setUrl] = useState(null);
 
   useEffect(() => {
+    setUrl(null)
     if (!file) return null;
     const filee = "/images/tejas" + file.name;
     const storageRef = ref(FStorage, filee);
