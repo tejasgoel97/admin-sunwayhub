@@ -11,6 +11,7 @@ import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import WelcomeSetupScreen from './screens/HomeSetupScreen';
 import EditHomeSetup from './screens/EditHomeSetup';
+import OrdersScreen from './screens/OrdersScreen';
 
 
 
@@ -28,7 +29,7 @@ const App =()=>{
 
           <Route path="login" index element={<LoginScreen/>}/>
           <Route path="AddNewProduct" element={<AddProductScreen/>}/>
-          <Route path="AddNewCategory" element={<AddCategoryScreen/>}/>
+          <Route path="Orders" element={<OrdersScreen/>}/>
           <Route path="HomeSetup" element={<WelcomeSetupScreen/>}>
             <Route path=":id" element={<EditHomeSetup/>} />
           </Route>

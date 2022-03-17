@@ -50,9 +50,9 @@ const ImageFirebaseUpload = ({ setShowModel , handleUrl }) => {
           {error && <p className="text-red-500">{error}</p>}
           {/* {file && } */}
           {file && (
-            <div>
+            <div className="flex flex-row flex-1 align-middle">
               <img 
-                className="h-1/6 w-2/3"
+                className="h-56"
                 src={URL.createObjectURL(file)} />
               
             </div>

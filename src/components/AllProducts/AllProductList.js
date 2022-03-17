@@ -7,7 +7,7 @@ import useCategories from '../../hooks/useCategories';
 import ProductCard from './ProductCard';
 
 
-const AllProductList = () =>{
+const AllProductList = ({subCategory}) =>{
     const {products,isProductloading, productLoadingError} = useProducts()
     const {categories,isCategoriesloading, categoriesLoadingError} = useCategories();
 
@@ -17,11 +17,16 @@ const AllProductList = () =>{
         navigate(`/editproduct/${productId}`)
     }
     if(isCategoriesloading || isProductloading) return <p>Loading...</p>
+    let filteredProducts = products.filter((product)=>{
+        if(! subCategory) return true
+        console.log(product.subCategory,subCategory.subCatName)
+        return product.subCategory == subCategory.subCatName
+    })
     return (
     <div className="content-center">
-        <h1>All Products</h1>
         <div className="w-full mx-auto max-w-2xl" >
-           { products.map(product=>{
+
+           {filteredProducts.map(product=>{
                console.log(product)
                const {productName, SP, MRP, featureImage, mainCategory,subCategory, productId} = product;
                let discountPerc = ((1-SP/MRP)*100).toFixed(2);

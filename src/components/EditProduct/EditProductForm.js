@@ -7,6 +7,8 @@ import { addDoc, collection } from '@firebase/firestore';
 import { db } from '../../firebase/config';
 import ConfirmChangesModel from './ConfirmChangesModel';
 import ManageImageComp from './ManageImageComp';
+import useEditProduct from '../../hooks/useEditProduct';
+import DeliveryCodesComp from '../DeliveryCodesComp';
 
 
 const EditProductForm =({allCat, product, productId}) =>{
@@ -24,7 +26,11 @@ const EditProductForm =({allCat, product, productId}) =>{
     const [error, setError] = useState(null)
     const[confirmModel, setConfirmModel] = useState(false)
     const[images, setImages] = useState(product.images || [])
+    const [deliveryCodes, setDeliveryCodes] = useState(product.deliveryCodes || [])
+
     
+    const {editLoading, editError, success, editProduct} = useEditProduct(productId);
+
     function handleUrl(url){
         setError(null)
         setImgUrl(url)
@@ -69,6 +75,8 @@ const EditProductForm =({allCat, product, productId}) =>{
         const CatName = category.id;
         const SubCatName = subCategory.id;
         FinalProduct= new ProductModel(name, MRP, SP, CatName, SubCatName, description, maxQuantity, imgUrl);
+        editProduct(FinalProduct)
+
         
         // setConfirmModel(FinalProduct)
         // const docRef = await addDoc(collection(db, "products"), FinalProduct);
@@ -97,20 +105,24 @@ const EditProductForm =({allCat, product, productId}) =>{
                 })}
                 </div>
             </div>
-            <div>
+            <div className="flex flex-col flex-1 items-center justify-center">
             <button
                 onClick={() => setShowModel(true)}
-                className="bg-red-500 px-7 py-2 ml-2 rounded-md text-md text-white font-semibold">
+                className="bg-red-500 px-7 py-2 ml-2 rounded-md text-md text-white font-semibold m-4">
                 {imgUrl ?"Change Image": "Add Image"}
             </button>
             {/* CONFIRMATION MODEL */}
             {confirmModel && <ConfirmChangesModel setConfirmModel={setConfirmModel} finalProduct={confirmModel} initialProduct={product} productId={productId}/>}
             {/* This is model to show Image Uploading Feature */}
             {showModel && <ImageUploadModel setShowModel={setShowModel} handleUrl={handleUrl}/>}
-            {imgUrl && <img src={imgUrl}/>}
+            <div >
+            
+            {imgUrl && <img src={imgUrl} className="h-56"/>}
+            </div>
             </div>
             <InputformComp label="Max Product Order" text={maxQuantity} setText={setMaxQuantity} type="number"/>
-            <ManageImageComp product={product} productId={productId} images={images} setImages={setImages}/>
+            <DeliveryCodesComp deliveryCodes={deliveryCodes} setDeliveryCodes={setDeliveryCodes}/>
+
             {error && <div>{error.map((e)=> <p key={e} className="p-1 my-1 bg-red-600 rounded break-words text-white">{e}</p>)}</div>}
             <button className="bg-green-700 mx-2 my-2 px-2 py-2 text-center text-white rounded-full w-full" onClick={handleChange}>Make Changes</button>
         </div>

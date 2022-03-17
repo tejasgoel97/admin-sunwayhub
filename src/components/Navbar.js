@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import useAuthContext from "../hooks/useAuthContext";
 import useLogout from "../hooks/useLogout";
 
@@ -7,19 +7,22 @@ const Navbar = () =>{
   const {authDone, user}= useAuthContext();
   const {Logout} = useLogout();
 
+  const location = useLocation();
+  const pathName = location.pathname;
+  let pathClassName = "bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium";
+  let notPathClassName = "text-gray-800 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+
     return (
-        <nav className="bg-green-400">
+        <nav style={{backgroundColor:"rgb(217,220,199)"}}>
             <div className="mx-2 py-2">
                 <div className="flex justify-between ">
                     <div className="flex-1 flex  space-x-4 items-center justify-start">
-                        <img className="h-8 w-auto"  src='https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg'/>
-                        <Link to="/" className ="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium" aria-current="page">Dashboard</Link>
+                        <img className="h-10 w-auto"  src={require("../logo Stretch Horizontal.png")}/>
+                        <Link to="/" className={pathName == "/" ? pathClassName: notPathClassName} aria-current="page">Products</Link>
 
-                        <Link to="/login" className ="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Team</Link>
+                        <Link to="/orders" className={pathName == "/orders" ? pathClassName: notPathClassName}>Orders</Link>
 
-                        <Link to="/signup" className ="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Projects</Link>
-
-                        <Link to="#" className ="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Calendar</Link>
+                        <Link to="/addnewproduct" className={pathName == "/addnewproduct" ? pathClassName: notPathClassName}>Add New Product</Link>
                     </div>
                     <div className=" flex-1 items-center">
                         <div className="flex justify-end px-5">

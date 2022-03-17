@@ -7,8 +7,11 @@ import { addDoc, collection } from '@firebase/firestore';
 import { db } from '../firebase/config';
 import DeliveryCodesComp from "./DeliveryCodesComp"
 
+import {useNavigate} from 'react-router-dom'
+
 
 const AddProductForm =({allCat}) =>{
+    const navigate = useNavigate();
     const [name, setName] = useState('');
     const [category, setCategory] = useState(null);
     const [subCategory, setSubCategory] = useState(null);
@@ -19,7 +22,7 @@ const AddProductForm =({allCat}) =>{
     const [description, setdescription] = useState([])
     const [showModel, setShowModel] = useState(false);
     const [imgUrl, setImgUrl] = useState(null);
-    const [deliveryCodes, setDeliveryCodes] = useState(["121102", "201303"])
+    const [deliveryCodes, setDeliveryCodes] = useState([])
     const [error, setError] = useState(null)
 
     function handleUrl(url){
@@ -51,21 +54,32 @@ const AddProductForm =({allCat}) =>{
     
 
     async function handleCreateDoc(){
+        console.log(SP,"SP", "MRP", MRP)
+        console.log(SP>MRP)
         setError(null)
         if(!name) return setError("Please select a Valid Name");
         // if(!category) return setError("Please Select a Valid Category")
         // if(!subCategory) return setError("Please Select a Valid Sub Category")
         if(MRP<10) return setError("MRP should be greater then 10")
         if(SP<10) return setError("SP should be greater then 10")
-        if(SP>MRP) return setError("Selling Price Should not be greater then MRP")
+        if(+SP> +MRP) return setError("Selling Price Should not be greater then MRP")
         if(maxQuantity<1) return setError("Please select a max Quantity to order");
         if(description.length <0) return setError("Please Select Atleast One description")
         const CatName = category.id;
         const SubCatName = subCategory.id;
         const FinalProduct= new ProductModel(name, MRP, SP, GST, CatName, SubCatName, description, maxQuantity, imgUrl, deliveryCodes)
         console.log("FinalProduct", FinalProduct)
-        const docRef = await addDoc(collection(db, "products"), FinalProduct);
-          console.log("Document written with ID: ", docRef.id);
+        try {
+            const docRef = await addDoc(collection(db, "products"), FinalProduct);
+            console.log("Document written with ID: ", docRef.id);
+            window.alert(`Document written with ID: ${ docRef.id}`)
+            navigate('/')
+        } catch (error) {
+            console.log(error)
+            window.alert('Cannot create the product, Please try again')
+        }
+
+          
     }
     return (
         <div className="w-auto xl:w-4/6 space-y-3">
@@ -100,7 +114,7 @@ const AddProductForm =({allCat}) =>{
             {/* This is model to show Image Uploading frature */}
             {showModel && <ImageUploadModel setShowModel={setShowModel} handleUrl={handleUrl}/>}
             {/* <ImageUploadComp  imgName = {name} folderName="categoty"/> */}
-            {imgUrl && <img src={imgUrl}/>}
+            {imgUrl && <img src={imgUrl} className="h-56"/>}
             </div>
             <InputformComp label="Max Product Order" text={maxQuantity} setText={setMaxQuantity} type="number"/>
             <div>
