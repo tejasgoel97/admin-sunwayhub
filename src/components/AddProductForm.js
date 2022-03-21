@@ -4,10 +4,11 @@ import InputformComp from './InputFormComp';
 import DropDownMenu from "./DropDownMenu"
 import ImageUploadModel from "./ImageUploadModel"
 import { addDoc, collection } from '@firebase/firestore';
-import { db } from '../firebase/config';
+import { db, projectAuth } from '../firebase/config';
 import DeliveryCodesComp from "./DeliveryCodesComp"
 
 import {useNavigate} from 'react-router-dom'
+import AddRatingReview from './AddProduct/AddRatingReview';
 
 
 const AddProductForm =({allCat}) =>{
@@ -24,6 +25,9 @@ const AddProductForm =({allCat}) =>{
     const [imgUrl, setImgUrl] = useState(null);
     const [deliveryCodes, setDeliveryCodes] = useState([])
     const [error, setError] = useState(null)
+    const [rating, setRating] = useState("5.0");
+    const [reviews, setReviews] = useState([]);
+
 
     function handleUrl(url){
         setError(null)
@@ -65,10 +69,13 @@ const AddProductForm =({allCat}) =>{
         if(+SP> +MRP) return setError("Selling Price Should not be greater then MRP")
         if(maxQuantity<1) return setError("Please select a max Quantity to order");
         if(description.length <0) return setError("Please Select Atleast One description")
+        if(!rating) return setError("Please give a rating to this product");
+
         const CatName = category.id;
         const SubCatName = subCategory.id;
-        const FinalProduct= new ProductModel(name, MRP, SP, GST, CatName, SubCatName, description, maxQuantity, imgUrl, deliveryCodes)
+        const FinalProduct= new ProductModel(name, MRP, SP, GST, CatName, SubCatName, description, maxQuantity, imgUrl, deliveryCodes, rating, reviews)
         console.log("FinalProduct", FinalProduct)
+        console.log(projectAuth.currentUser.email);
         try {
             const docRef = await addDoc(collection(db, "products"), FinalProduct);
             console.log("Document written with ID: ", docRef.id);
@@ -108,7 +115,7 @@ const AddProductForm =({allCat}) =>{
             <div>
             <button
                 onClick={() => setShowModel(true)}
-                class="bg-red-500 px-7 py-2 ml-2 rounded-md text-md text-white font-semibold">
+                className="bg-red-500 px-7 py-2 ml-2 rounded-md text-md text-white font-semibold">
                 {imgUrl ?"Change Image": "Add Image"}
             </button>
             {/* This is model to show Image Uploading frature */}
@@ -120,6 +127,7 @@ const AddProductForm =({allCat}) =>{
             <div>
                 <DeliveryCodesComp deliveryCodes={deliveryCodes} setDeliveryCodes={setDeliveryCodes}/>
             </div>
+            <AddRatingReview rating ={rating} reviews={reviews} setRating={setRating} setReviews={setReviews} />
             {error && <p className="p-1 bg-red-600 rounded-b break-words text-white">{error}</p>}
             <button className="bg-green-700 mx-2 my-2 px-2 py-2 text-center text-white rounded-full w-full" onClick={handleCreateDoc}>Create</button>
         </div>
@@ -139,9 +147,13 @@ const AddProductForm =({allCat}) =>{
 //         this.featureImage= featureImage
 //     }
 // }
-function ProductModel(productName, MRP, SP, GST, mainCategory , subCategory, productDescription, maxQuantity, featureImage, deliveryCodes){
+function ProductModel(productName, MRP, SP, GST, mainCategory , subCategory, productDescription, maxQuantity, featureImage, deliveryCodes, rating, reviews){
+    let SearchString = `${productName} ${mainCategory} ${subCategory} `
+    SearchString = SearchString.toLowerCase();
+    let createdDate = new Date();
+    let createdBy = projectAuth.currentUser?.email || "FOUND BUG"
     return{
-        productName, MRP, SP, GST, mainCategory ,subCategory, productDescription, maxQuantity, featureImage, deliveryCodes
+        productName, MRP, SP, GST, mainCategory ,subCategory, productDescription, maxQuantity, featureImage, deliveryCodes, rating, reviews, SearchString, createdDate, createdBy
     }
 }
 

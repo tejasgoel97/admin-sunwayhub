@@ -19,6 +19,7 @@ const useEditProduct = (productId) =>{
         try {
             await updateDoc(productRef, data)
         } catch (error) {
+            console.log(error)
             setEditError("someThing went Wrong Please reload the page")
         }
 

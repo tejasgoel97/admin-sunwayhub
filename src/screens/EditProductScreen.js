@@ -10,7 +10,6 @@ const EditProductScreen = () =>{
 
     const {categories,isCategoriesloading, categoriesLoadingError} = useCategories();
 
-    console.log(urlParams)
     const {product,isProductloading, productLoadingError} = useProduct(urlParams.productId)
     if(isProductloading || isCategoriesloading){
         return <p>Loading...</p>

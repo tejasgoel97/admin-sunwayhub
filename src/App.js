@@ -28,12 +28,12 @@ const App =()=>{
           <Route path="signup" element={<SignUpScreen/>}/>
 
           <Route path="login" index element={<LoginScreen/>}/>
-          <Route path="AddNewProduct" element={<AddProductScreen/>}/>
-          <Route path="Orders" element={<OrdersScreen/>}/>
-          <Route path="HomeSetup" element={<WelcomeSetupScreen/>}>
+          <Route path="addnewproduct" element={<AddProductScreen/>}/>
+          <Route path="orders" element={<OrdersScreen/>}/>
+          <Route path="homesetup" element={<WelcomeSetupScreen/>}>
             <Route path=":id" element={<EditHomeSetup/>} />
           </Route>
-          <Route path="EditProduct" element={<EditProductScreen/>}>
+          <Route path="editproduct" element={<EditProductScreen/>}>
             <Route path=":productId" element={<EditProductScreen/>}/>
           </Route>
         </Routes>

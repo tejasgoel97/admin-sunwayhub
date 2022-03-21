@@ -12,7 +12,6 @@ const ManageImageComp = ({images, setImages, product,productId}) =>{
     const imgUrlRef = useRef();
 
     const {progress, url, error: error2} = useStorage(file);
-    console.log(images)
     useEffect(()=>{
         if(!url) return ;
         const productRef = doc(db, "products", productId);

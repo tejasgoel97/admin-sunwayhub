@@ -26,10 +26,11 @@ const DropDownMenu = ({options, selected, setSelected,nameField , placeHolder="S
               return (
                 <button 
                 type="submit" 
-                class="text-gray-700 block w-full text-left px-4 py-2 text-sm" 
+                className="text-gray-700 block w-full text-left px-4 py-2 text-sm" 
                 role="menuitem" 
-                tabindex="-1" 
+                tabIndex="-1" 
                 id="menu-item-3"
+                key={index}
                 onClick={()=> handleOptionSelct(index)}>
                 {option[nameField]}
                 </button>

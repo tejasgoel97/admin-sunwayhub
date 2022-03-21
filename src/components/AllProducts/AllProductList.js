@@ -19,7 +19,7 @@ const AllProductList = ({subCategory}) =>{
     if(isCategoriesloading || isProductloading) return <p>Loading...</p>
     let filteredProducts = products.filter((product)=>{
         if(! subCategory) return true
-        console.log(product.subCategory,subCategory.subCatName)
+        // console.log(product.subCategory,subCategory.subCatName)
         return product.subCategory == subCategory.subCatName
     })
     return (
@@ -27,10 +27,9 @@ const AllProductList = ({subCategory}) =>{
         <div className="w-full mx-auto max-w-2xl" >
 
            {filteredProducts.map(product=>{
-               console.log(product)
                const {productName, SP, MRP, featureImage, mainCategory,subCategory, productId} = product;
                let discountPerc = ((1-SP/MRP)*100).toFixed(2);
-               return <ProductCard product={product} handleProductEdit={handleProductEdit}/>
+               return <ProductCard product={product} handleProductEdit={handleProductEdit} key={productId}/>
            })}
         </div>
     </div>

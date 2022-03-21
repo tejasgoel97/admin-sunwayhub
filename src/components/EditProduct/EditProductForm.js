@@ -4,11 +4,12 @@ import InputformComp from '../InputFormComp';
 import DropDownMenu from "../DropDownMenu"
 import ImageUploadModel from "../ImageUploadModel"
 import { addDoc, collection } from '@firebase/firestore';
-import { db } from '../../firebase/config';
+import { db, projectAuth } from '../../firebase/config';
 import ConfirmChangesModel from './ConfirmChangesModel';
 import ManageImageComp from './ManageImageComp';
 import useEditProduct from '../../hooks/useEditProduct';
 import DeliveryCodesComp from '../DeliveryCodesComp';
+import AddRatingReview from '../AddProduct/AddRatingReview';
 
 
 const EditProductForm =({allCat, product, productId}) =>{
@@ -19,14 +20,17 @@ const EditProductForm =({allCat, product, productId}) =>{
     const [subCategory, setSubCategory] = useState(selectedSubCat);
     const [MRP, setMRP] = useState(product.MRP);
     const [SP, setSP] = useState(product.SP);
+    const [GST, setGST] = useState(product.GST || 0);
+
     const [maxQuantity, setMaxQuantity] = useState(product.maxQuantity);
-    const [description, setdescription] = useState(product.productDescription)
+    const [description, setdescription] = useState(product.productDescription || [])
     const [showModel, setShowModel] = useState(false);
-    const [imgUrl, setImgUrl] = useState(product.featureImage);
+    const [imgUrl, setImgUrl] = useState(product.featureImage || "");
     const [error, setError] = useState(null)
     const[confirmModel, setConfirmModel] = useState(false)
-    const[images, setImages] = useState(product.images || [])
     const [deliveryCodes, setDeliveryCodes] = useState(product.deliveryCodes || [])
+    const [rating, setRating] = useState(product.rating ||"5.0");
+    const [reviews, setReviews] = useState(product.reviews|| []);
 
     
     const {editLoading, editError, success, editProduct} = useEditProduct(productId);
@@ -74,7 +78,7 @@ const EditProductForm =({allCat, product, productId}) =>{
         if(errorArray.length) return setError(errorArray);
         const CatName = category.id;
         const SubCatName = subCategory.id;
-        FinalProduct= new ProductModel(name, MRP, SP, CatName, SubCatName, description, maxQuantity, imgUrl);
+        FinalProduct= new ProductModel(name, MRP, SP,GST, CatName, SubCatName, description, maxQuantity, imgUrl,  deliveryCodes, rating, reviews);
         editProduct(FinalProduct)
 
         
@@ -88,6 +92,8 @@ const EditProductForm =({allCat, product, productId}) =>{
             <div className="flex justify-center space-x-2 flex-1">
                <InputformComp label="MRP" text={MRP} setText={setMRP} type="number"/>
                <InputformComp label="Selling Price" text={SP} setText={setSP} type="number"/>
+               <InputformComp label="GST %" text={GST} setText={setGST} type="number"/>
+
             </div>
             <div className="flex justify-center space-x-2 flex-1 p-8">  
                 <DropDownMenu options = {allCat} selected={category} setSelected = {handleCategorySelect} nameField="catName" placeHolder="Select Category"/>
@@ -122,14 +128,22 @@ const EditProductForm =({allCat, product, productId}) =>{
             </div>
             <InputformComp label="Max Product Order" text={maxQuantity} setText={setMaxQuantity} type="number"/>
             <DeliveryCodesComp deliveryCodes={deliveryCodes} setDeliveryCodes={setDeliveryCodes}/>
-
+            <AddRatingReview rating ={rating} reviews={reviews} setRating={setRating} setReviews={setReviews} />
+            
             {error && <div>{error.map((e)=> <p key={e} className="p-1 my-1 bg-red-600 rounded break-words text-white">{e}</p>)}</div>}
             <button className="bg-green-700 mx-2 my-2 px-2 py-2 text-center text-white rounded-full w-full" onClick={handleChange}>Make Changes</button>
         </div>
     )
 }
-function ProductModel(productName, MRP, SP,mainCategory , subCategory, productDescription, maxQuantity, featureImage){
-    return{productName, MRP, SP,mainCategory , subCategory, productDescription, maxQuantity, featureImage}
+function ProductModel(productName, MRP, SP, GST, mainCategory , subCategory, productDescription, maxQuantity, featureImage, deliveryCodes, rating, reviews){
+    let SearchString = `${productName} ${mainCategory} ${subCategory} `
+    SearchString = SearchString.toLowerCase();
+    let updatedDate = new Date();
+    let updatedBy = projectAuth.currentUser?.email || "FOUND BUG"
+
+    return{
+        productName, MRP, SP, GST, mainCategory ,subCategory, productDescription, maxQuantity, featureImage, deliveryCodes, rating, reviews, SearchString, updatedDate, updatedBy
+    }
 }
 
 
