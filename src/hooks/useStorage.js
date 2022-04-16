@@ -10,7 +10,7 @@ const useStorage = (file) => {
   useEffect(() => {
     setUrl(null)
     if (!file) return null;
-    const filee = "/images/tejas" + file.name;
+    const filee = "/images/" + file.name;
     const storageRef = ref(FStorage, filee);
     const uploadTask = uploadBytesResumable(storageRef, file);
     uploadTask.on(

@@ -71,7 +71,7 @@ const EditProductForm =({allCat, product, productId}) =>{
         // if(!subCategory) errorArray.push("Please Select a Valid Sub Category")
         if(MRP<10) errorArray.push("MRP should be greater then 10")
         if(SP<10) errorArray.push("SP should be greater then 10")
-        if(SP>MRP) errorArray.push("Selling Price Should not be greater then MRP")
+        if(+SP> +MRP) return setError("Selling Price Should not be greater then MRP")
         if(maxQuantity<1) errorArray.push("Please select a max Quantity to order");
         if(description.length <1) errorArray.push("Please Select Atleast One description")
         console.log("ERR", errorArray)

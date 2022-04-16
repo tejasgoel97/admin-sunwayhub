@@ -12,6 +12,8 @@ import SignUpScreen from './screens/SignUpScreen';
 import WelcomeSetupScreen from './screens/HomeSetupScreen';
 import EditHomeSetup from './screens/EditHomeSetup';
 import OrdersScreen from './screens/OrdersScreen';
+import DealerCodeScreen from './screens/DealerCodeScreen';
+import CouponCodeScreen from './screens/CouponCodeScreen';
 
 
 
@@ -21,22 +23,27 @@ const App =()=>{
   return (
     <div>
       <BrowserRouter>
-        <Navbar/>
+        
       {authDone ?
+      <>
+      <Navbar/>
         <Routes>
           <Route path="/" element={<HomeScreen/>}/>
           <Route path="signup" element={<SignUpScreen/>}/>
-
           <Route path="login" index element={<LoginScreen/>}/>
           <Route path="addnewproduct" element={<AddProductScreen/>}/>
-          <Route path="orders" element={<OrdersScreen/>}/>
+          <Route path="orders" element={<OrdersScreen/>}/>          
+          <Route path="dealerCode" element={<DealerCodeScreen/>} />
+          <Route path="couponCode" element={<CouponCodeScreen/>} />
           <Route path="homesetup" element={<WelcomeSetupScreen/>}>
+
             <Route path=":id" element={<EditHomeSetup/>} />
           </Route>
           <Route path="editproduct" element={<EditProductScreen/>}>
             <Route path=":productId" element={<EditProductScreen/>}/>
           </Route>
         </Routes>
+      </>
         :  
         <Routes>
           <Route path="" index element={<LoginScreen/>}/>

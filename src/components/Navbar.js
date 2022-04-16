@@ -15,7 +15,7 @@ const Navbar = () =>{
     return (
         <nav style={{backgroundColor:"rgb(217,220,199)"}}>
             <div className="mx-2 py-2">
-                <div className="flex justify-between ">
+                <div className="flex justify-between flex-1">
                     <div className="flex-1 flex  space-x-4 items-center justify-start">
                         <img className="h-10 w-auto"  src={require("../logo Stretch Horizontal.png")}/>
                         <Link to="/" className={pathName == "/" ? pathClassName: notPathClassName} aria-current="page">Products</Link>
@@ -23,8 +23,10 @@ const Navbar = () =>{
                         <Link to="/orders" className={pathName == "/orders" ? pathClassName: notPathClassName}>Orders</Link>
 
                         <Link to="/addnewproduct" className={pathName == "/addnewproduct" ? pathClassName: notPathClassName}>Add Product</Link>
+                        <Link to="/dealercode" className={pathName == "/dealercode" ? pathClassName: notPathClassName}>Dealer Codes</Link>
+                        <Link to="/couponcode" className={pathName == "/couponcode" ? pathClassName: notPathClassName}>Coupon Codes</Link>
                     </div>
-                    <div className=" flex-1 items-center">
+                    <div className=" items-center">
                         <div className="flex justify-end px-5">
                         {!authDone ? 
                             <Link to="/login" className =" text-white block px-3 py-2 rounded-md text-base font-medium" aria-current="page">Login</Link>
