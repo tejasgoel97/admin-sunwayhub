@@ -14,6 +14,7 @@ import EditHomeSetup from './screens/EditHomeSetup';
 import OrdersScreen from './screens/OrdersScreen';
 import DealerCodeScreen from './screens/DealerCodeScreen';
 import CouponCodeScreen from './screens/CouponCodeScreen';
+import DealerOrderScreen from './screens/DealerOrderScreen';
 
 
 
@@ -35,6 +36,8 @@ const App =()=>{
           <Route path="orders" element={<OrdersScreen/>}/>          
           <Route path="dealerCode" element={<DealerCodeScreen/>} />
           <Route path="couponCode" element={<CouponCodeScreen/>} />
+          <Route path="dealerorder" element={<DealerOrderScreen/>}/>
+
           <Route path="homesetup" element={<WelcomeSetupScreen/>}>
 
             <Route path=":id" element={<EditHomeSetup/>} />

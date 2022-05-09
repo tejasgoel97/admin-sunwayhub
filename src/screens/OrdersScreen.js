@@ -1,5 +1,10 @@
+import CustomerOrder from "../components/Orders.js/CustomerOrder"
+import useOrders from "../hooks/useOrders"
+
 function OrdersScreen() {
-    return<h1>OrdersScreen</h1>
+    const {error, loading, orders} = useOrders()
+
+    return <CustomerOrder orders={orders}/>
 }
 
 
