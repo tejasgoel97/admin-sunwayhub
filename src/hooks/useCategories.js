@@ -24,6 +24,7 @@ const useCategories = ()=>{
                 setIsCategoriesLoading(false)
                 setCategoriesLoadingError(false)
                 setCategories(categories)
+                console.log("catttt",categories)
 
             }catch(err){
                 console.log(err)

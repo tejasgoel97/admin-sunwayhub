@@ -16,8 +16,9 @@ const useHomeSetup = () =>{
             querySnapshot.forEach((doc) => {
             data.push({id: doc.id , ...doc.data()})
             })  
-            const sortedData = data.sort((a,b)=> a.position>b.position)
+            const sortedData = data.sort((a,b)=> a.position-b.position)
             setHomeSetupData(sortedData)
+            console.log("HOMEE", sortedData)
             setLoading(false)
             setError(null)
         })
