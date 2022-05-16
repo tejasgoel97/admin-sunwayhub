@@ -16,10 +16,14 @@ const useDealerOrders = () =>{
             querySnapshot.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
                 console.log(doc.id, " => ", doc.data());
-                orders.push({productId: doc.id, ...doc.data()});
+                let  createdAtReadable = doc.data()?.createdAt
+                createdAtReadable = new Date(createdAtReadable.toDate())
+                console.log({createdAtReadable})
+                orders.push({productId: doc.id, ...doc.data(), createdAtReadable});
             });
             setError("");
             setLoading(false)
+            orders = orders.sort((a,b)=> b.createdAtReadable - a.createdAtReadable)
             setDealerOrders(orders)
         } catch (error) {
             console.log(error)
@@ -32,7 +36,7 @@ const useDealerOrders = () =>{
         fetchDealerOrders()
     }, [])
     
-    return {error, loading, dealerOrders}
+    return {error, loading, dealerOrders, fetchDealerOrders}
 }
 
 export default useDealerOrders;

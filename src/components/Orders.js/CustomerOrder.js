@@ -2,7 +2,7 @@ import { useState } from "react"
 import CustomerOrderCard from "./CustomerOrderCard"
 
 
-const CustomerOrder = ({orders}) => {
+const CustomerOrder = ({orders,fetchDealerOrders}) => {
     const [orderIndex, setOrderIndex] = useState(1);
 
     console.log(orders)

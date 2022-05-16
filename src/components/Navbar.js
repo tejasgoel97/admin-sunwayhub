@@ -21,6 +21,7 @@ const Navbar = () =>{
                         <Link to="/" className={pathName == "/" ? pathClassName: notPathClassName} aria-current="page">Products</Link>
 
                         <Link to="/orders" className={pathName == "/orders" ? pathClassName: notPathClassName}>Orders</Link>
+                        <Link to="/dealerorders" className={pathName == "/dealerorders" ? pathClassName: notPathClassName}>Dealer orders</Link>
 
                         <Link to="/addnewproduct" className={pathName == "/addnewproduct" ? pathClassName: notPathClassName}>Add Product</Link>
                         <Link to="/dealercode" className={pathName == "/dealercode" ? pathClassName: notPathClassName}>Dealer Codes</Link>

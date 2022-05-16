@@ -151,9 +151,10 @@ function ProductModel(productName, MRP, SP, GST, mainCategory , subCategory, pro
     let SearchString = `${productName} ${mainCategory} ${subCategory} `
     SearchString = SearchString.toLowerCase();
     let createdDate = new Date();
-    let createdBy = projectAuth.currentUser?.email || "FOUND BUG"
+    let createdBy = projectAuth.currentUser?.email || "FOUND BUG";
+    let available = true
     return{
-        productName, MRP, SP, GST, mainCategory ,subCategory, productDescription, maxQuantity, featureImage, deliveryCodes, rating, reviews, SearchString, createdDate, createdBy
+        productName, MRP, SP, GST, mainCategory ,subCategory, productDescription, maxQuantity, featureImage, deliveryCodes, rating, reviews, SearchString, createdDate, createdBy, available
     }
 }
 
