@@ -36,7 +36,8 @@ const App =()=>{
           <Route path="orders" element={<OrdersScreen/>}/>          
           <Route path="dealerCode" element={<DealerCodeScreen/>} />
           <Route path="couponCode" element={<CouponCodeScreen/>} />
-          <Route path="dealerorder" element={<DealerOrderScreen/>}/>
+          <Route path="dealerorders" element={<DealerOrderScreen/>}/>
+          <Route path="categories" element={<DealerOrderScreen/>}/>
 
           <Route path="homesetup" element={<WelcomeSetupScreen/>}>
 
