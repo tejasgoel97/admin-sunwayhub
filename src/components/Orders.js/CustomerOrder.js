@@ -21,10 +21,10 @@ const CustomerOrder = ({orders,fetchDealerOrders}) => {
     return (
         <div className="content-center ">
             <div className="flex justify-evenly max-w-3xl mx-auto">
-                <button className={`${orderIndex ===1 ? "bg-yellow-500" : "bg-slate-800"} p-1 rounded-md m-1 text-white`} onClick={()=> setOrderIndex(1)}>New Orders</button>
-                <button className={`${orderIndex ===2 ? "bg-yellow-500" : "bg-slate-800"} p-1 rounded-md m-1 text-white`} onClick={()=> setOrderIndex(2)} >DISPATCHED</button>
-                <button className={`${orderIndex ===3 ? "bg-yellow-500" : "bg-slate-800"} p-1 rounded-md m-1 text-white`} onClick={()=> setOrderIndex(3)}>COMPLETED</button>
-                <button className={`${orderIndex ===4 ? "bg-yellow-500" : "bg-slate-800"} p-1 rounded-md m-1 text-white`} onClick={()=> setOrderIndex(4)}>CANCELLED</button>
+                <button className={`${orderIndex ===1 ? "bg-yellow-500" : "bg-slate-800"} p-2 rounded-md m-1 text-white`} onClick={()=> setOrderIndex(1)}>New Orders <span className="bg-green-600 p-1  px-2 m-1 rounded-full">{newOrders.length}</span></button>
+                <button className={`${orderIndex ===2 ? "bg-yellow-500" : "bg-slate-800"} p-2 rounded-md m-1 text-white`} onClick={()=> setOrderIndex(2)} >DISPATCHED <span className="bg-green-600 p-1  px-2 m-1 rounded-full">{dispatchedOrders.length}</span></button>
+                <button className={`${orderIndex ===3 ? "bg-yellow-500" : "bg-slate-800"} p-2 rounded-md m-1 text-white`} onClick={()=> setOrderIndex(3)}>COMPLETED <span className="bg-green-600 p-1 px-2 m-1 rounded-full">{completedOrders.length}</span></button>
+                <button className={`${orderIndex ===4 ? "bg-yellow-500" : "bg-slate-800"} p-2 rounded-md m-1 text-white`} onClick={()=> setOrderIndex(4)}>CANCELLED <span className="bg-green-600 p-1  px-2 m-1 rounded-full">{cancelledOrders.length}</span></button>
             </div>
             {/* *****************NEW ORDERS********************** */}
             {orderIndex === 1 && <div className="mx-auto max-w-3xl">
