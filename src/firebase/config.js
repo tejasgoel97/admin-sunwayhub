@@ -33,7 +33,7 @@ const firebaseConfig = {
   projectId: "sunwayhub",
   storageBucket: "sunwayhub.appspot.com",
   messagingSenderId: "460564337114",
-  appId: "1:460564337114:web:4436663090bce0dd0470e3",
+  appId: "1:460564337114:web:4436663090bce0dd0470e3", 
   measurementId: "G-L2XB6PZL4J"
 };
 
