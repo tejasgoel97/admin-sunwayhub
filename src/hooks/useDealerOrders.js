@@ -19,7 +19,7 @@ const useDealerOrders = () =>{
                 let  createdAtReadable = doc.data()?.createdAt
                 createdAtReadable = new Date(createdAtReadable.toDate())
                 console.log({createdAtReadable})
-                orders.push({productId: doc.id, ...doc.data(), createdAtReadable});
+                orders.push({id: doc.id, ...doc.data(), createdAtReadable});
             });
             setError("");
             setLoading(false)

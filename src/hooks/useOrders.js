@@ -12,19 +12,22 @@ const useOrders = () =>{
         setLoading(true)
         try {
             const querySnapshot = await getDocs(collection(db, "orders-customer"))
-            let orders = []
+            let orderss = []
             querySnapshot.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
                 console.log(doc.id, " => ", doc.data());
                 let  createdAtReadable = doc.data()?.createdAt
                 createdAtReadable = new Date(createdAtReadable.toDate())
                 console.log({createdAtReadable})
-                orders.push({productId: doc.id, ...doc.data()}, createdAtReadable);
+                orderss.push({id: doc.id, ...doc.data(), createdAtReadable});
             });
             setError("");
             setLoading(false)
-            orders = orders.sort((a,b)=> b.createdAtReadable - a.createdAtReadable)
-            setOrders(orders)
+            console.log({ordersss:orderss})
+            orderss = orderss.sort((a,b)=> b.createdAtReadable - a.createdAtReadable)
+            setOrders(orderss)
+            console.log({ordersssss:orderss})
+
         } catch (error) {
             console.log(error)
             setLoading(false)

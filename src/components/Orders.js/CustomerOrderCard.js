@@ -8,23 +8,37 @@ const CustomerOrderCard = ({order}) =>{
     const [showCancel, setShowCancel] = useState(false)
     const [showComplete, setShowComplete] = useState(false)
     let  createdAt = order.createdAt
-    createdAt = new Date(createdAt.toDate()).toDateString()
+    const date = new Date(createdAt.toDate()).toDateString()
+    const time = new Date(createdAt.toDate()).toLocaleTimeString()
+
     return <div className="bg-green-200 border-2 rounded m-2 overflow-hidden  position: relative " >
         {showDispatch && <DispatchPopup setShowDispatch={setShowDispatch} order={order}/>}
         {showCancel && <CancelPopup setShowCancel={setShowCancel} order={order}/>}
         {showComplete && <CompletePopup setShowComplete={setShowComplete} order={order}/>}
         <div>
             <div className="flex justify-between bg-green-900">
-                <h3 className="bg-red-500 text-green-200 p-1">{createdAt}</h3>
+                <h3 className="bg-red-500 text-green-200 p-1">{date} {time}</h3>
                 <div>
                     {order.status === "CREATED" && <button onClick={()=> setShowDispatch(true)} className="btn rounded-md bg-green-500 m-1 text-white px-1">DISPATCH </button>}
                     {(order.status === "DISPATCHED" || order.status === "CREATED") &&<button onClick={()=> setShowCancel(true)} className="btn rounded-md bg-red-600 m-1 text-white px-1">CANCEL</button>}
                     {order.status === "DISPATCHED" && <button onClick={()=> setShowComplete(true)} className="btn rounded-md bg-green-600 m-1 text-white px-1">COMPLETE</button>}
                 </div>
             </div>
-            <h2>Order Id: {order.id}</h2>
-            <h2>Payment Id: {order.paymentId}</h2>
-            <h2>Amount : {order.amountAfterCoupon}</h2>
+            <div className="flex justify-between">
+                <div>
+                    <h2><span className="font-bold">Order Id: </span>{order.orderId}</h2>
+                    <h2><span className="font-bold">Payment Id: </span>{order.paymentId || "NA"}</h2>
+                    <h2><span className="font-bold">Coupon code:  </span>{order.isCouponApplied ? <span className="bg-green-600 text-red-200">{order.couponCode.toUpperCase()}</span>: <span className="bg-yellow-300">Not Applied</span>}</h2>  
+                    <h2><span className="font-bold">User Phone Number:  </span>  {order.createdBy.phoneNumber || "NA"}</h2>
+                    
+                </div>
+                <div className="text-right">
+                    <h2><span className="font-bold">Amount without discount: ₹</span>{order.amountBeforeCoupon || 0}</h2>
+                    <h2><span className="font-bold">Discount </span>({order.discountInPercent || 0}%): ₹{order.discountInRs || 0}</h2>
+                    <h2><span className="font-bold">Amount :₹  </span>{order.amountAfterCoupon || 0}</h2>  
+
+                </div>
+            </div>
             {order.dealerName && <h2 className=""><span className="font-bold text-lg">Dealer Name:</span> {order.dealerName}</h2>}
             <h2 className="font-bold text-lg">DelieveryAddress</h2>
             <h2 className="pl-10"><span className="font-bold">Name:</span> {order.deliveryAddress.name}</h2>
@@ -77,7 +91,7 @@ const DispatchPopup = ({setShowDispatch, order}) =>{
             >
                 Cancle
             </button>
-            <button className="bg-red-500 px-7 py-2 ml-2 rounded-md text-md text-white font-semibold" onClick={()=> dispatchOrder(isDealer, order.id,dispatchNotes,trackAddress, callbackFxn)}>
+            <button className="bg-red-500 px-7 py-2 ml-2 rounded-md text-md text-white font-semibold" onClick={()=> dispatchOrder(isDealer, order.orderId,dispatchNotes,trackAddress, callbackFxn)}>
                 Dispatch
             </button>
         </div>
@@ -103,7 +117,7 @@ const CancelPopup = ({setShowCancel, order}) =>{
             >
                 GoBack
             </button>
-            <button className="bg-red-500 px-7 py-2 ml-2 rounded-md text-md text-white font-semibold" onClick={()=> cancelOrder(isDealer, order.id,cancelNotes, callbackFxn)}>
+            <button className="bg-red-500 px-7 py-2 ml-2 rounded-md text-md text-white font-semibold" onClick={()=> cancelOrder(isDealer, order.orderId,cancelNotes, callbackFxn)}>
                 Cancel Order
             </button>
         </div>
@@ -129,7 +143,7 @@ const CompletePopup = ({setShowComplete, order}) =>{
             >
                 GoBack
             </button>
-            <button className="bg-red-500 px-7 py-2 ml-2 rounded-md text-md text-white font-semibold" onClick={()=> completeOrder(isDealer, order.id,completeNotes, callbackFxn)}>
+            <button className="bg-red-500 px-7 py-2 ml-2 rounded-md text-md text-white font-semibold" onClick={()=> completeOrder(isDealer, order.orderId,completeNotes, callbackFxn)}>
                 Complete Order
             </button>
         </div>

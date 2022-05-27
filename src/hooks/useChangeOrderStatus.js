@@ -3,7 +3,7 @@ import { db, projectAuth } from "../firebase/config";
 
 const UseChangeOrderStatus = () =>{
     async function dispatchOrder(isDealer,orderId, dispatchNotes, trackAddress,callbackFxn){
-        const collectionName = isDealer ? "orders-dealer" : ""
+        const collectionName = isDealer ? "orders-dealer" : "orders-customer"
         const orderRef = doc(db, collectionName, orderId);
         const newHistory = {
             changedBy:  {
@@ -29,7 +29,7 @@ const UseChangeOrderStatus = () =>{
     }
 
     async function cancelOrder(isDealer,orderId, cancelNotes,callbackFxn){
-        const collectionName = isDealer ? "orders-dealer" : ""
+        const collectionName = isDealer ? "orders-dealer" : "orders-customer"
         const orderRef = doc(db, collectionName, orderId);
         const newHistory = {
             changedBy:  {
@@ -54,7 +54,7 @@ const UseChangeOrderStatus = () =>{
     }
 
     async function completeOrder(isDealer,orderId, completeNotes,callbackFxn){
-        const collectionName = isDealer ? "orders-dealer" : ""
+        const collectionName = isDealer ? "orders-dealer" : "orders-customer"
         const orderRef = doc(db, collectionName, orderId);
         const newHistory = {
             changedBy:  {
