@@ -24,8 +24,8 @@ const Navbar = () =>{
                         <Link to="/dealerorders" className={pathName == "/dealerorders" ? pathClassName: notPathClassName}>Dealer orders</Link>
 
                         <Link to="/addnewproduct" className={pathName == "/addnewproduct" ? pathClassName: notPathClassName}>Add Product</Link>
-                        <Link to="/dealercode" className={pathName == "/dealercode" ? pathClassName: notPathClassName}>Dealer Codes</Link>
-                        <Link to="/couponcode" className={pathName == "/couponcode" ? pathClassName: notPathClassName}>Coupon Codes</Link>
+                        <Link to="/dealercode" className={pathName == "/dealercode" ? pathClassName: notPathClassName}>Dealer Code</Link>
+                        <Link to="/couponcode" className={pathName == "/couponcode" ? pathClassName: notPathClassName}>Coupon Code</Link>
                     </div>
                     <div className=" items-center">
                         <div className="flex justify-end px-5">
